@@ -42,8 +42,7 @@ def record(eventName, caller, response, severity=None, message=None):
                             "name": eventName,
                             "data": {
                                 "caller": caller,
-                                #"response": "SUCCESS",
-                                "response": str(Response(response).value),
+                                "response": getattr(Response, response).value,
                                 "message": eventName + " executed successfully"
                             }
                         }
@@ -54,7 +53,7 @@ def record(eventName, caller, response, severity=None, message=None):
                             "name": eventName,
                             "data": {
                                 "caller": caller,
-                                "severity": str(Severity(severity).value),
+                                "severity": getattr(Severity, severity).value,
                                 "message": str(e)
                             }
                         }
