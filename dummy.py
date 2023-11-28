@@ -41,7 +41,7 @@ class EventProcessor:
                     "severity": event["data"].get("severity", Severity.INFO.value),
                     "caller": event["data"].get("caller", inspect.stack()[1][3]),
                     "response": event["data"].get("response", Response.FAILURE.value),
-                    "message": event["data"].get("message", "Default message from process data")
+                    "message": event["data"].get("message", "Default message from init")
                 }
             }
             processed_data.append(processed_event)
