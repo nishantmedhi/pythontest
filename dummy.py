@@ -17,8 +17,8 @@ class Response(Enum):
 class EventProcessor:
     def __init__(self, events=None):
         if events is None:
-            events = [
-                {
+            events = []
+                """{
                     "name": "default_event",
                     "data": {
                         "datetime": datetime.now().isoformat(),
@@ -27,11 +27,11 @@ class EventProcessor:
                         "response": Response.FAILURE.value,
                         "message": "Default message from init"
                     }
-                }
-            ]
+                }"""
+            #]
         self.events = events
 
-    """def process_data(self):
+    def process_data(self):
         processed_data = []
         for event in self.events:
             processed_event = {
@@ -46,7 +46,7 @@ class EventProcessor:
             }
             processed_data.append(processed_event)
 
-        return {"Event": processed_data}"""
+        return {"Event": processed_data}
 
     def read_and_print_file(self, filename='output.json'):
         if os.path.exists(filename):
@@ -58,7 +58,7 @@ class EventProcessor:
             print(f"The file {filename} does not exist.")
             
     def write_to_file(self, filename='output.json'):
-        processed_data = self.events()
+        processed_data = self.process_data()
         print(f"Processed data :")
         print(json.dumps(processed_data, indent=2))
 
