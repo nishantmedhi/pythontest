@@ -14,7 +14,7 @@ class Severity(Enum):
 class Logger:
     def __init__(self, json_data=None):
         if json_data is None:
-	        json_data = {
+	        self.json_data = {
 				    "event": [
 				        {
 				            "name": "Default event",
@@ -29,9 +29,9 @@ class Logger:
 				    ]
 		}
         else:
-            self.event = []
-	    self.name = json_data["name"]
-            self.data = json_data["data"]	
+	    self.json_data = []
+	    self.json_data.name = json_data["name"]
+            self.json_data.data = json_data["data"]	
 
     @staticmethod
     def log_to_file(json_data, file_path='logger.json'):
