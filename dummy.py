@@ -23,8 +23,8 @@ class EventProcessor:
                         "datetime": datetime.now().isoformat(),
                         "severity": Severity.INFO.value,
                         "caller": inspect.stack()[1][3],
-                        "response": Response.SUCCESS.value,
-                        "message": "Default message"
+                        "response": Response.FAILURE.value,
+                        "message": "Default message from init"
                     }
                 }
             ]
@@ -39,8 +39,8 @@ class EventProcessor:
                     "datetime": event["data"].get("datetime", datetime.now().isoformat()),
                     "severity": event["data"].get("severity", Severity.INFO.value),
                     "caller": event["data"].get("caller", inspect.stack()[1][3]),
-                    "response": event["data"].get("response", Response.SUCCESS.value),
-                    "message": event["data"].get("message", "Default message")
+                    "response": event["data"].get("response", Response.FAILURE.value),
+                    "message": event["data"].get("message", "Default message from process data")
                 }
             }
             processed_data.append(processed_event)
