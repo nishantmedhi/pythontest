@@ -40,13 +40,13 @@ def pre_check_ansible_windows():
 def record(eventName, caller, response, severity = null, message = null):
     logger.event.name = eventName
     logger.event.data.caller = caller
-    if (severity != "ERROR" or severity != "EXCEPTION") and response == "SUCCESS":
+    if severity not in ["ERROR", "EXCEPTION"] and response == "SUCCESS":
         logger.event.data = {
                         "response": response
                     }
     else:
         logger.event.data = {
-                        "severity": Severity.$severity.value,
+                        "severity": Severity.severity.value,
                         "message": str(e)
                     }
         
