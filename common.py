@@ -14,7 +14,7 @@ class Response(Enum):
     SUCCESS = 200
     FAILURE = 400
 
-class EventProcessor:
+class Logger:
     def __init__(self, events=None):
         if events is None:
             events = []
