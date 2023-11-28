@@ -36,7 +36,8 @@ class DataProcessor:
         for event in self.events:
             print(f"\nEvent: {event['name']}")
             for data in event['data']:
-                print(f"  Datetime: {data['datetime']}, Severity: {data['severity']}, Response: {data['response']}, Message: {data['message']}")
+                print(data)
+                #print(f"  Datetime: {data['datetime']}, Severity: {data['severity']}, Response: {data['response']}, Message: {data['message']}")
 
 # Example usage:
 # If no events are provided, a default event will be used
