@@ -14,24 +14,26 @@ class Response(Enum):
 
 class EventLogger:
     def __init__(self, data=None):
-        if data is None:
-            # Initialize with dummy values
-            self.data = {
-                "Event": [
-                    {
-                        "name": "DefaultEvent",
-                        "data": self.get_default_data()
-                    }
-                ]
-            }
-        else:
+        self.data = {
+            "Event": []
+        }
+        if data is not None:
             # Update with provided data, filling missing values with defaults
-            self.data = self.fill_defaults(data)
+            self.fill_defaults(data)
 
     def fill_defaults(self, data):
         for event in data.get("Event", []):
-            event["data"] = self.fill_default_values(event.get("data", {}))
-        return data
+            existing_event = next(
+                (e for e in self.data["Event"] if e["name"] == event["name"]),
+                None
+            )
+            if existing_event:
+                existing_event["data"].update(self.fill_default_values(event.get("data", {})))
+            else:
+                self.data["Event"].append({
+                    "name": event["name"],
+                    "data": self.fill_default_values(event.get("data", {}))
+                })
 
     def fill_default_values(self, data):
         default_values = {
@@ -43,15 +45,6 @@ class EventLogger:
         }
         data.update({key: data.get(key, value) for key, value in default_values.items()})
         return data
-
-    def get_default_data(self):
-        return {
-            "datetime": str(datetime.now()),
-            "severity": Severity.INFO.value,
-            "caller": self.get_caller_function(),
-            "response": Response.SUCCESS.value,
-            "message": "Default message"
-        }
 
     def get_caller_function(self):
         # Get the name of the calling function using inspect
@@ -75,6 +68,13 @@ custom_data = {
             "data": {
                 "severity": Severity.WARNING.value,
                 "message": "Custom message"
+            }
+        },
+        {
+            "name": "CustomEvent",
+            "data": {
+                "response": Response.FAILURE.value,
+                "message": "Another message"
             }
         }
     ]
