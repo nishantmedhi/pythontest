@@ -4,11 +4,11 @@ from datetime import datetime
 import inspect
 import os
 
-
 class Severity(Enum):
     INFO = 'INFO'
     WARNING = 'WARNING'
     ERROR = 'ERROR'
+    EXCEPTION = 'EXCEPTION'
 
 class Response(Enum):
     SUCCESS = 'SUCCESS'
@@ -73,6 +73,8 @@ class EventProcessor:
         with open(filename, 'w') as json_file:
             json.dump(existing_data, json_file, indent=2)
         print(f"Processed data written to {filename}")
+
+
 
 
 # If data is provided, it updates the fields accordingly
