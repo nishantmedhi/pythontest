@@ -1,6 +1,13 @@
 name: Test Dummy Code
 
-on: push
+on:
+  workflow_dispatch:
+    inputs:
+      to_version:
+        description: 'Patch java version'
+        required: true
+        default: 11.0.11
+        type: string
 
 jobs:
   dummy-test:
@@ -10,4 +17,4 @@ jobs:
     - name: Check-out devops repository
       uses: actions/checkout@v2
     - name: Hello World
-      run: python template.py
+      run: TO_VERSION=${{ github.event.inputs.to_version }} python upgrage_java_install_windows.py
