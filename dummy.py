@@ -49,17 +49,12 @@ custom_events = [
         "data": {
             "datetime": "2023-01-01 12:00:00",
             "severity": Severity.WARNING.name,
-            "caller": "custom_caller",
-            "response": "SUCCESS",
-            "message": "Custom message 1"
         }
     },
     {
         "name": "Custom Event 2",
         "data": {
             "datetime": "2023-02-02 14:30:00",
-            "severity": Severity.ERROR.name,
-            "caller": "another_caller",
             "response": "FAILURE",
             "message": "Custom message 2"
         }
