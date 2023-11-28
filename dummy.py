@@ -49,12 +49,12 @@ class DataProcessor:
                 ]
             }
             output.append(event_data)
-        print(output)
+        return output
 
 # Example usage:
 # If no events are provided, a default event will be used
 processor1 = DataProcessor()
-
+print(json.dumps(processor1.output_json, indent=2))
 # If events are provided, they will be used with dynamic names
 event_data = {
     "CustomEvent1": [
@@ -66,4 +66,4 @@ event_data = {
     ]
 }
 processor2 = DataProcessor(event_data)
-processor2.print_events()
+print(json.dumps(processor2.output_json, indent=2))
