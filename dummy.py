@@ -31,30 +31,19 @@ class DataProcessor:
                     "name": event_name,
                     "data": custom_event_data
                 })
-        self.output_json = self.generate_output_json()
-
-    def generate_output_json(self):
-        output = []
+        
+    def print_events(self):
         for event in self.events:
-            event_data = {
-                "name": event['name'],
-                "data": [
-                    {
-                        "datetime": data['datetime'],
-                        "severity": data['severity'],
-                        "response": data['response'],
-                        "message": data['message']
-                    }
-                    for data in event['data']
-                ]
-            }
-            output.append(event_data)
-        return output
+            print(f"\nEvent: {event['name']}")
+            for data in event['data']:
+                # Check if data is a dictionary; if not, convert it to a dictionary
+                data_dict = json.loads(data) if isinstance(data, str) else data
+                print(data_dict)
+                #print(f"  Datetime: {data_dict['datetime']}, Severity: {data_dict['severity']}, Response: {data_dict['response']}, Message: {data_dict['message']}")
 
 # Example usage:
 # If no events are provided, a default event will be used
 processor1 = DataProcessor()
-print(json.dumps(processor1.output_json, indent=2))
 # If events are provided, they will be used with dynamic names
 event_data = {
     "CustomEvent1": [
@@ -66,4 +55,4 @@ event_data = {
     ]
 }
 processor2 = DataProcessor(event_data)
-print(json.dumps(processor2.output_json, indent=2))
+processor2.print_events()
