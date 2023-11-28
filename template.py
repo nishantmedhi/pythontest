@@ -4,11 +4,10 @@ import inspect
 logger = Logger()
 
 def pre_check_env_windows():
+    eventName = "Validating environment pre-checks in Windows"
+    caller = logger.get_caller()
     try:
-        caller = Logger.get_caller()
-        eventName = "Validating environment pre-checks in Windows"
         print(eventName)
-        
         if "Windows" in eventName:
             record(eventName, caller, "SUCCESS")
         else:
@@ -22,11 +21,10 @@ def pre_check_env_windows():
         
 
 def pre_check_ansible_windows():
+    eventName = "Validating installation of Ansible in Windows"
+    caller = logger.get_caller()
     try:
-        caller = Logger.get_caller()
-        eventName = "Validating installation of Ansible in Windows"
         print(eventName)
-        
         if "Ansible" in eventName:
             record(eventName, caller, "SUCCESS")
         else:
