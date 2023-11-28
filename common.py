@@ -14,19 +14,18 @@ class Severity(Enum):
 class Logger:
     def __init__(self, json_data=None):
         if json_data is None:
-			json_data = {
-						"event": [
-						{
-							"name": "Default event",
-			                "data": {
-			                	"datetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-			                    "severity": Severity.INFO.name,
-			                    "caller": self.get_caller(),
-			                    "response": "FAILURE",
-			                    "message": ""
-			                }
-						}]
-					}
+            json_data = {
+                "event": [ {
+                    "name": "Default event",
+                    "data": {
+                        "datetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "severity": Severity.INFO.name,
+                        "caller": self.get_caller(),
+                        "response": "FAILURE",
+                        "message": ""
+                    }
+				} ]
+            }
 		else:
 			self.event.name = json_data["name"]
 			self.event.data = json_data["data"]
