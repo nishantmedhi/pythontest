@@ -21,7 +21,7 @@ def pre_check_env_windows():
         pre_check_ansible_windows()
             
     except Exception as e:
-        eventData = eventRecorder.record(eventName, caller, "FAILURE", "EXCEPTION", str(e))
+        eventData = eventRecorder.record(eventName, caller, "FAILURE", "EXCEPTION", e)
         update_logs(eventData)
 
 def pre_check_ansible_windows():
