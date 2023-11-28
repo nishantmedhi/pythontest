@@ -13,12 +13,12 @@ def pre_check_env_windows():
             record(eventName, caller, "SUCCESS")
         else:
             message = "eventName doesn't contain Windows"
-            record(eventName, caller, "FAILURE", ERROR, message)
+            record(eventName, caller, "FAILURE", "ERROR", message)
             
         pre_check_ansible_windows()
             
     except Exception as e:
-        record(eventName, caller, "FAILURE", EXCEPTION, str(e))
+        record(eventName, caller, "FAILURE", "EXCEPTION", str(e))
         
 
 def pre_check_ansible_windows():
@@ -31,13 +31,13 @@ def pre_check_ansible_windows():
             record(eventName, caller, "SUCCESS")
         else:
             message = "eventName doesn't contain Ansible"
-            record(eventName, caller, "FAILURE", ERROR, message) 
+            record(eventName, caller, "FAILURE", "ERROR", message) 
             
     except Exception as e:
-        record(eventName, caller, "FAILURE", EXCEPTION, str(e))
+        record(eventName, caller, "FAILURE", "EXCEPTION", str(e))
        
         
-def record(eventName, caller, response, severity = null, message = null):
+def record(eventName, caller, response, severity=None, message=None):
     logger.event.name = eventName
     logger.event.data.caller = caller
     if severity not in ["ERROR", "EXCEPTION"] and response == "SUCCESS":
