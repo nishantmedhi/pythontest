@@ -47,6 +47,15 @@ class EventProcessor:
 
         return {"Event": processed_data}
 
+    def read_and_print_file(self, filename='output.json'):
+        if os.path.exists(filename):
+            with open(filename, 'r') as json_file:
+                file_content = json.load(json_file)
+                print("File Content:")
+                print(json.dumps(file_content, indent=2))
+        else:
+            print(f"The file {filename} does not exist.")
+            
     def write_to_file(self, filename='output.json'):
         processed_data = self.process_data()
         print(f"Processed data :")
@@ -94,3 +103,5 @@ custom_data_2 = [
 ]
 processor_with_data_2 = EventProcessor(custom_data_2)
 processor_with_data_2.write_to_file('output_existing.json')
+
+EventProcessor.read_and_print_file('output_existing.json')
