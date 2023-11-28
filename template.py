@@ -1,41 +1,57 @@
-from common import Logger, Severity
+from logdata import Logger, Severity
 import inspect
 
 logger = Logger()
 
 def pre_check_env_windows():
     try:
-        caller = logger.get_caller()
+        caller = Logger.get_caller()
         eventName = "Validating environment pre-checks in Windows"
         print(eventName)
         
         if "Windows" in eventName:
-            logger.record(eventName, caller, "SUCCESS")
+            record(eventName, caller, "SUCCESS")
         else:
             message = "eventName doesn't contain Windows"
-            logger.record(eventName, caller, "SUCCESS", WARNING, message)
+            record(eventName, caller, "FAILURE", ERROR, message)
             
         pre_check_ansible_windows()
             
     except Exception as e:
-        logger.record(eventName, caller, "FAILURE", EXCEPTION, str(e))
+        record(eventName, caller, "FAILURE", EXCEPTION, str(e))
         
 
 def pre_check_ansible_windows():
     try:
-        caller = logger.get_caller()
+        caller = Logger.get_caller()
         eventName = "Validating installation of Ansible in Windows"
         print(eventName)
         
         if "Ansible" in eventName:
-            logger.record(eventName, caller, "SUCCESS")
+            record(eventName, caller, "SUCCESS")
         else:
             message = "eventName doesn't contain Ansible"
-            logger.record(eventName, caller, "FAILURE", ERROR, message) 
+            record(eventName, caller, "FAILURE", ERROR, message) 
             
     except Exception as e:
-        logger.record(eventName, caller, "FAILURE", EXCEPTION, str(e))
-      
-      
+        record(eventName, caller, "FAILURE", EXCEPTION, str(e))
+       
+        
+def record(eventName, caller, response, severity = null, message = null):
+    logger.event.name = eventName
+    logger.event.data.caller = caller
+    if (severity != "ERROR" or severity != "EXCEPTION") and response == "SUCCESS":
+        logger.event.data = {
+                        "response": response
+                    }
+    else:
+        logger.event.data = {
+                        "severity": Severity.$severity.value,
+                        "message": str(e)
+                    }
+        
+    logger.log_to_file(logger.__dict__)
+    
+
 if __name__ == "__main__":
     pre_check_env_windows()
