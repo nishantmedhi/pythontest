@@ -51,7 +51,7 @@ class Logger:
                         }
         else:
             Logger.event.data = {
-                            "severity": Severity.$severity.value,
+                            "severity": Severity.[severity].value,
                             "message": str(e)
                         }
         
