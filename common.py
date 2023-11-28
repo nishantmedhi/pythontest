@@ -14,7 +14,7 @@ class Severity(Enum):
 class Logger:
     def __init__(self, json_data=None):
         if json_data is None:
-	        self.json_data = {
+	        self.json_data = [ {
 				    "event": [
 				        {
 				            "name": "Default event",
@@ -27,9 +27,9 @@ class Logger:
 			                    }
 				        }
 				    ]
-		}
+		} ]
         else:
-		self.json_data = {}
+		self.json_data = []
 		self.json_data.name = json_data["name"]
         	self.json_data.data = json_data["data"]	
 
