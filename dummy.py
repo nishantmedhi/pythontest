@@ -84,7 +84,7 @@ processor_with_data_1.write_to_file('output.json')  # Append data to existing fi
 custom_data_2 = [
     {
         "data": {
-            "severity": Severity.WARNING.value
+            "severity": Severity.WARNING.value,
             "message": "Custom warning message 2"
         }
     }
