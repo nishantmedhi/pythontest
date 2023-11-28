@@ -5,14 +5,14 @@ import inspect
 import os
 
 class Severity(Enum):
-    INFO = "0"
-    WARNING = "1"
-    ERROR = "2"
-    EXCEPTION = "3"
+    INFO = 0
+    WARNING = 1
+    ERROR = 2
+    EXCEPTION = 3
 
 class Response(Enum):
-    SUCCESS = "200"
-    FAILURE = "400"
+    SUCCESS = 200
+    FAILURE = 400
 
 class Logger:
     def __init__(self, events=None):
