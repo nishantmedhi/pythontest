@@ -51,19 +51,3 @@ class Logger:
             calling_function = stack[2].function
             return f"{calling_module}.{calling_function}"
         return "Function caller could not be determined"
-        
-        
-    def record(self, eventName, caller, response, severity=None, message=None):
-        Logger.event.name = eventName
-        Logger.event.data.caller = caller
-        if severity not in ["ERROR", "EXCEPTION"] and response == "SUCCESS":
-            Logger.event.data = {
-                            "response": response
-                        }
-        else:
-            Logger.event.data = {
-                            "severity": Severity.severity.value,
-                            "message": str(e)
-                        }
-        
-        Logger.log_to_file(Logger.__dict__)
