@@ -43,7 +43,7 @@ def record(eventName, caller, response, severity=None, message=None):
                             "name": eventName,
                             "data": {
                                 "caller": caller,
-                                "response": Response(response).value,
+                                "response": "SUCCESS",
                                 "message": eventName + " executed successfully"
                             }
                         }
