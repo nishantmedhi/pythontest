@@ -50,20 +50,46 @@ class EventProcessor:
         processed_data = self.process_data()
         print(f"Processed data :")
         print(json.dumps(processed_data, indent=2))
-        #with open(filename, 'w') as json_file:
-            #json.dump(processed_data, json_file, indent=2)
-        #print(f"Processed data written to {filename}")
+
+        if os.path.exists(filename):
+            # If the file already exists, load existing data and append new data
+            with open(filename, 'r') as json_file:
+                existing_data = json.load(json_file)
+                existing_data["Event"].extend(processed_data["Event"])
+        else:
+            existing_data = processed_data
+
+        with open(filename, 'w') as json_file:
+            json.dump(existing_data, json_file, indent=2)
+        print(f"Processed data written to {filename}")
 
 
 # If data is provided, it updates the fields accordingly
-custom_data = [
+processor = EventProcessor()
+processor.write_to_file('output_existing.json')  # Create a file with default data
+
+# If data is provided, it updates the fields accordingly
+custom_data_1 = [
     {
-        "name": "custom_event",
+        "name": "custom_event_1",
         "data": {
             "severity": Severity.ERROR.value,
-            "message": "Custom error message"
+            "message": "Custom error message 1"
         }
     }
 ]
-processor_with_data = EventProcessor(custom_data)
-processor_with_data.write_to_file('output.json')
+processor_with_data_1 = EventProcessor(custom_data_1)
+processor_with_data_1.write_to_file('output_existing.json')  # Append data to existing file
+
+# Add another set of custom data
+custom_data_2 = [
+    {
+        "name": "custom_event_2",
+        "data": {
+            "severity": Severity.WARNING.value,
+            "message": "Custom warning message"
+        }
+    }
+]
+processor_with_data_2 = EventProcessor(custom_data_2)
+processor_with_data_2.write_to_file('output_existing.json')
