@@ -1,7 +1,7 @@
 from common import Severity, Response
 
 class EventRecorder:
-    def record(eventName, caller, response, severity=None, message=None):
+    def record(self, eventName, caller, response, severity=None, message=None):
         eventData = []
         if severity not in ["ERROR", "EXCEPTION"] and response == "SUCCESS":
             eventData = [
