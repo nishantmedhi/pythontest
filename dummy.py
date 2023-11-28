@@ -1,6 +1,5 @@
-import json
-from enum import Enum
 from datetime import datetime
+from enum import Enum
 import inspect
 
 class Severity(Enum):
@@ -8,76 +7,64 @@ class Severity(Enum):
     WARNING = 'WARNING'
     ERROR = 'ERROR'
 
-class Response(Enum):
-    SUCCESS = 'SUCCESS'
-    FAILURE = 'FAILURE'
-
 class EventLogger:
-    def __init__(self, data=None):
-        self.data = {
-            "Event": []
+    def __init__(self, events=None):
+        if events is None:
+            events = [self.create_default_event(), self.create_default_event()]
+
+        self.events = events
+
+    def create_default_event(self):
+        return {
+            "name": "Default event",
+            "data": {
+                "datetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "severity": Severity.INFO.name,
+                "caller": self.get_caller(),
+                "response": "FAILURE",
+                "message": ""
+            }
         }
-        if data is not None:
-            # Update with provided data, filling missing values with defaults
-            self.fill_defaults(data)
 
-    def fill_defaults(self, data):
-        for event in data.get("Event", []):
-            existing_event = next(
-                (e for e in self.data["Event"] if e["name"] == event["name"]),
-                None
-            )
-            if existing_event:
-                existing_event["data"].update(self.fill_default_values(event.get("data", {})))
-            else:
-                self.data["Event"].append({
-                    "name": event["name"],
-                    "data": self.fill_default_values(event.get("data", {}))
-                })
+    def get_caller(self):
+        # Use inspect to get the name of the calling function
+        frame = inspect.currentframe()
+        caller = inspect.getouterframes(frame)[2].function
+        return caller
 
-    def fill_default_values(self, data):
-        default_values = {
-            "datetime": str(datetime.now()),
-            "severity": Severity.INFO.value,
-            "caller": self.get_caller_function(),
-            "response": Response.SUCCESS.value,
-            "message": "Default message"
-        }
-        data.update({key: data.get(key, value) for key, value in default_values.items()})
-        return data
-
-    def get_caller_function(self):
-        # Get the name of the calling function using inspect
-        frame = inspect.currentframe().f_back
-        return inspect.getframeinfo(frame).function
-
-    def to_json(self):
-        return json.dumps(self.data, indent=2)
+    def display_events(self):
+        for event in self.events:
+            print(event)
 
 # Example usage:
 
-# Case 1: No data provided, use default values
-event_logger_1 = EventLogger()
-print(event_logger_1.to_json())
+# Create an EventLogger with default events
+logger1 = EventLogger()
+logger1.display_events()
 
-# Case 2: Provide data with some fields missing
-custom_data = {
-    "Event": [
-        {
-            "name": "CustomEvent",
-            "data": {
-                "severity": Severity.WARNING.value,
-                "message": "Custom message"
-            }
-        },
-        {
-            "name": "CustomEvent",
-            "data": {
-                "response": Response.FAILURE.value,
-                "message": "Another message"
-            }
+# Create an EventLogger with provided events
+custom_events = [
+    {
+        "name": "Custom Event 1",
+        "data": {
+            "datetime": "2023-01-01 12:00:00",
+            "severity": Severity.WARNING.name,
+            "caller": "custom_caller",
+            "response": "SUCCESS",
+            "message": "Custom message 1"
         }
-    ]
-}
-event_logger_2 = EventLogger(custom_data)
-print(event_logger_2.to_json())
+    },
+    {
+        "name": "Custom Event 2",
+        "data": {
+            "datetime": "2023-02-02 14:30:00",
+            "severity": Severity.ERROR.name,
+            "caller": "another_caller",
+            "response": "FAILURE",
+            "message": "Custom message 2"
+        }
+    }
+]
+
+logger2 = EventLogger(custom_events)
+logger2.display_events()
