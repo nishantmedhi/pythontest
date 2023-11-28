@@ -17,7 +17,7 @@ class Logger:
 	        print("Data is missing")
         else:
             self.event.name = json_data["name"]
-			self.event.data = json_data["data"]
+            self.event.data = json_data["data"]
 
     @staticmethod
     def log_to_file(json_data, file_path='logger.json'):
