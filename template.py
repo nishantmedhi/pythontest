@@ -1,4 +1,4 @@
-from logdata import Logger, Severity
+from common import Logger, Severity
 import inspect
 
 logger = Logger()
