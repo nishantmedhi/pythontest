@@ -1,5 +1,6 @@
-from datetime import datetime
+import json
 from enum import Enum
+from datetime import datetime
 import inspect
 
 class Severity(Enum):
@@ -7,59 +8,60 @@ class Severity(Enum):
     WARNING = 'WARNING'
     ERROR = 'ERROR'
 
-class EventLogger:
+class Response(Enum):
+    SUCCESS = 'SUCCESS'
+    FAILURE = 'FAILURE'
+
+class EventProcessor:
     def __init__(self, events=None):
         if events is None:
-            events = [self.create_default_event(), self.create_default_event()]
-
+            events = [
+                {
+                    "name": "default_event",
+                    "data": {
+                        "datetime": datetime.now().isoformat(),
+                        "severity": Severity.INFO.value,
+                        "caller": inspect.stack()[1][3],
+                        "response": Response.SUCCESS.value,
+                        "message": "Default message"
+                    }
+                }
+            ]
         self.events = events
 
-    def create_default_event(self):
-        return {
-            "name": "Default event",
-            "data": {
-                "datetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "severity": Severity.INFO.name,
-                "caller": self.get_caller(),
-                "response": "FAILURE",
-                "message": ""
-            }
-        }
-
-    def get_caller(self):
-        # Use inspect to get the name of the calling function
-        frame = inspect.currentframe()
-        caller = inspect.getouterframes(frame)[2].function
-        return caller
-
-    def display_events(self):
+    def process_data(self):
+        processed_data = []
         for event in self.events:
-            print(event)
+            processed_event = {
+                "name": event.get("name", "default_event"),
+                "data": {
+                    "datetime": event["data"].get("datetime", datetime.now().isoformat()),
+                    "severity": event["data"].get("severity", Severity.INFO.value),
+                    "caller": event["data"].get("caller", inspect.stack()[1][3]),
+                    "response": event["data"].get("response", Response.SUCCESS.value),
+                    "message": event["data"].get("message", "Default message")
+                }
+            }
+            processed_data.append(processed_event)
 
-# Example usage:
+        return {"Event": processed_data}
 
-# Create an EventLogger with default events
-logger1 = EventLogger()
-logger1.display_events()
+    def write_to_file(self, filename='output.json'):
+        processed_data = self.process_data()
+        with open(filename, 'w') as json_file:
+            json.dump(processed_data, json_file, indent=2)
+        print(f"Processed data written to {filename}")
 
-# Create an EventLogger with provided events
-custom_events = [
+
+# If data is provided, it updates the fields accordingly
+custom_data = [
     {
-        "name": "Custom Event 1",
+        "name": "custom_event",
         "data": {
-            "datetime": "2023-01-01 12:00:00",
-            "severity": Severity.WARNING.name,
-        }
-    },
-    {
-        "name": "Custom Event 2",
-        "data": {
-            "datetime": "2023-02-02 14:30:00",
-            "response": "FAILURE",
-            "message": "Custom message 2"
+            "severity": Severity.ERROR.value,
+            "message": "Custom error message"
         }
     }
 ]
-
-logger2 = EventLogger(custom_events)
-logger2.display_events()
+processor_with_data = EventProcessor(custom_data)
+processor_with_data.write_to_file('output.json')
