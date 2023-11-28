@@ -54,7 +54,7 @@ def record(eventName, caller, response, severity=None, message=None):
                             "name": eventName,
                             "data": {
                                 "caller": caller,
-                                "severity": Severity(severity).value
+                                "severity": Severity(severity).value,
                                 "message": str(e)
                             }
                         }
