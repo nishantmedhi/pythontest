@@ -3,7 +3,7 @@ from common import Severity, Response
 class EventRecorder:
     def record(eventName, caller, response, severity=None, message=None):
         eventData = []
-        if severity not in [Severity.ERROR.name, Severity.EXCEPTION.name] and response == Response.SUCCESS.name:
+        if severity not in ["ERROR", "EXCEPTION"] and response == "SUCCESS":
             eventData = [
                 {
                     "name": eventName,
@@ -21,7 +21,7 @@ class EventRecorder:
                     "data": {
                         "caller": caller,
                         "severity": getattr(Severity, severity).value,
-                        "message": message
+                        "message": str(message)
                     }
                 }
             ]
