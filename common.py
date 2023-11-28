@@ -14,7 +14,18 @@ class Severity(Enum):
 class Logger:
     def __init__(self, json_data=None):
         if json_data is None:
-	        print("Data is missing")
+	        json_data = {
+				    "events": [
+				        {
+				            "name": "Event1",
+				            "data": {
+				                "name": "John",
+				                "age": 25,
+				                "location": "City1"
+				            }
+				        }
+				    ]
+		}
         else:
             self.event.name = json_data["name"]
             self.event.data = json_data["data"]
