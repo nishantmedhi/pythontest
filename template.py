@@ -43,8 +43,8 @@ def record(eventName, caller, response, severity=None, message=None):
                             "name": eventName,
                             "data": {
                                 "caller": caller,
-                                "response": response,
-                                "message": eventName + "executed successfully"
+                                "response": Response(response).value,
+                                "message": eventName + " executed successfully"
                             }
                         }
                     ]
@@ -54,7 +54,7 @@ def record(eventName, caller, response, severity=None, message=None):
                             "name": eventName,
                             "data": {
                                 "caller": caller,
-                                "severity": Severity(severity).value,
+                                "severity": Severity(severity).name,
                                 "message": str(e)
                             }
                         }
@@ -62,6 +62,7 @@ def record(eventName, caller, response, severity=None, message=None):
 
     logger_data = Logger(eventData)
     logger_data.write_to_file('output.json')
+    # Optional read file function to see the updated json file with every insertion of incoming event data
     logger.read_and_print_file('output.json')
     
 
