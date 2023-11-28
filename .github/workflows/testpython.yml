@@ -3,6 +3,11 @@ name: Test Dummy Code
 on:
   workflow_dispatch:
     inputs:
+      from_version:
+        description: 'Rollback java version'
+        required: true
+        default: 11.0.10
+        type: string
       to_version:
         description: 'Patch java version'
         required: true
@@ -10,11 +15,24 @@ on:
         type: string
 
 jobs:
-  dummy-test:
-    name: Hello world
+  verify-windows-env:
+    name: Verify windows environments
     runs-on: ubuntu-latest
     steps:
-    - name: Check-out devops repository
-      uses: actions/checkout@v2
-    - name: Hello World
-      run: TO_VERSION=${{ github.event.inputs.to_version }} python upgrage_java_install_windows.py
+    - uses: actions/checkout@v2
+    - run: python template.py
+  upgrade_java_version:
+    name: Upgrade java version
+    runs-on: ubuntu-latest
+    needs: [verify-windows-env]
+    steps:
+    - uses: actions/checkout@v2
+    - run: TO_VERSION=${{ github.event.inputs.to_version }} python upgrage_java_install_windows.py
+      id: update_status
+      continue-on-error: true
+  rollback_java_version:
+    runs-on: ubuntu-latest
+    name: Rollback java version
+    if: failure()
+    steps:
+      - run: FROM_VERSION=${{ github.event.inputs.from_version }} python rollback_java_install_windows.py
