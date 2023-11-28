@@ -12,26 +12,36 @@ class Severity(Enum):
     EXCEPTION = 3
 
 class Logger:
-    def __init__(self, json_data=None):
-        if json_data is None:
-	        self.json_data = [ {
-				    "event": [
-				        {
-				            "name": "Default event",
-			                    "data": {
-			                        "datetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-			                        "severity": Severity.INFO.name,
-			                        "caller": self.get_caller(),
-			                        "response": "FAILURE",
-			                        "message": ""
-			                    }
-				        }
-				    ]
-			} ]
+    def __init__(self, events=None):
+        default_values = {
+            "datetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "severity": Severity.INFO.name,
+	    "caller": self.get_caller(),
+            "response": "FAILURE",
+            "message": ""
+        }
+        
+        if events is None:
+            # If no events are provided, use a default event
+            self.events = [
+                {
+                    "name": "Default Event",
+                    "data": default_values
+                }
+            ]
         else:
-	        self.json_data = []
-		self.json_data.name = json_data["name"]
-        	self.json_data.data = json_data["data"]	
+            # If events are provided, use them
+            self.events = []
+            for event_name, event_data in events.items():
+                custom_event_data = []
+                for item in event_data:
+                    # Fill missing fields with default values
+                    filled_data = {**default_values, **json.loads(item)}
+                    custom_event_data.append(filled_data)
+                self.events.append({
+                    "name": event_name,
+                    "data": custom_event_data
+                })	
 
     @staticmethod
     def log_to_file(json_data, file_path='logger.json'):
