@@ -42,7 +42,7 @@ class Logger:
         return "Function caller could not be determined"
         
         
-    def record(self, eventName, caller, response, severity = null, message = null):
+    def record(self, eventName, caller, response, severity=None, message=None):
         Logger.event.name = eventName
         Logger.event.data.caller = caller
         if severity not in ["ERROR", "EXCEPTION"] and response == "SUCCESS":
