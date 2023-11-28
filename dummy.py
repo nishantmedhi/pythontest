@@ -29,12 +29,11 @@ class EventProcessor:
                     "datetime": event["data"].get("datetime", datetime.now().isoformat()),
                     "severity": event["data"].get("severity", Severity.INFO.value),
                     "caller": event["data"].get("caller", inspect.stack()[1][3]),
-                    "response": event["data"].get("response", Response.SUCCESS.value),
-                    "message": event["data"].get("message", "Default message from process_data")
+                    "response": event["data"].get("response", Response.FAILURE.value),
+                    "message": event["data"].get("message", "")
                 }
             }
             processed_data.append(processed_event)
-
         return {"Event": processed_data}
 
     def read_and_print_file(self, filename='output.json'):
@@ -48,8 +47,8 @@ class EventProcessor:
             
     def write_to_file(self, filename='output.json'):
         processed_data = self.process_data()
-        print(f"Processed data :")
-        print(json.dumps(processed_data, indent=2))
+        #print(f"Processed data :")
+        #print(json.dumps(processed_data, indent=2))
 
         if os.path.exists(filename):
             # If the file already exists, load existing data and append new data
@@ -64,8 +63,8 @@ class EventProcessor:
         print(f"Processed data written to {filename}")
 
 # If data is provided, it updates the fields accordingly
-processor = EventProcessor()
-processor.write_to_file('output.json')  # Create a file with default data
+#processor = EventProcessor()
+#processor.write_to_file('output.json')  # Create a file with default data
 
 
 # If data is provided, it updates the fields accordingly
@@ -84,10 +83,9 @@ processor_with_data_1.write_to_file('output.json')  # Append data to existing fi
 # Add another set of custom data
 custom_data_2 = [
     {
-        "name": "custom_event_2",
         "data": {
             "severity": Severity.WARNING.value
-            #"message": "Custom warning message 2"
+            "message": "Custom warning message 2"
         }
     }
 ]
