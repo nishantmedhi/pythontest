@@ -1,5 +1,4 @@
 from common import Logger, Severity, Response
-import inspect
 
 logger = Logger()
 
@@ -44,7 +43,7 @@ def record(eventName, caller, response, severity=None, message=None):
                             "data": {
                                 "caller": caller,
                                 #"response": "SUCCESS",
-                                "response": Response(response).value,
+                                "response": str(Response(response).value),
                                 "message": eventName + " executed successfully"
                             }
                         }
@@ -55,7 +54,7 @@ def record(eventName, caller, response, severity=None, message=None):
                             "name": eventName,
                             "data": {
                                 "caller": caller,
-                                "severity": Severity(severity).value,
+                                "severity": str(Severity(severity).value),
                                 "message": str(e)
                             }
                         }
