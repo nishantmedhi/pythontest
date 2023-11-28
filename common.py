@@ -15,7 +15,7 @@ class Logger:
     def __init__(self, json_data=None):
         if json_data is None:
             json_data = {
-                "event": [
+                "event": [ {
                     "name": "Default event",
                     "data": {
                         "datetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -24,6 +24,7 @@ class Logger:
                         "response": "FAILURE",
                         "message": ""
                     }
+		}
                 ]
             }
 		else:
