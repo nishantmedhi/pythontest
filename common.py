@@ -17,7 +17,18 @@ class Response(Enum):
 class Logger:
     def __init__(self, events=None):
         if events is None:
-            events = []
+            events = [
+                {
+                    "name": "default_event",
+                    "data": {
+                        "datetime": datetime.now().isoformat(),
+                        "severity": Severity.INFO.value,
+                        "caller": self.get_caller(),
+                        "response": Response.FAILURE.value,
+                        "message": ""
+                    }
+                }
+            ]
         self.events = events
 
     def process_data(self):
