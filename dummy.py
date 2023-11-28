@@ -2,6 +2,7 @@ import json
 from enum import Enum
 from datetime import datetime
 import inspect
+import os
 
 class Severity(Enum):
     INFO = 'INFO'
