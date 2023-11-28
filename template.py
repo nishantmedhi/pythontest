@@ -60,7 +60,7 @@ def record(eventName, caller, response, severity=None, message=None):
                         }
                     ]
 
-    logger_data = logger(eventData)
+    logger_data = Logger(eventData)
     logger_data.write_to_file('output.json')
     logger.read_and_print_file('output.json')
     
