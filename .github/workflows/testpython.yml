@@ -9,4 +9,4 @@ jobs:
     - name: Check-out devops repository
       uses: actions/checkout@v2
     - name: Hello World
-      run: python dummy.py
+      run: python template.py
