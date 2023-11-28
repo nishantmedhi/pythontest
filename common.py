@@ -1,8 +1,8 @@
 import json
 from enum import Enum
-import os
 from datetime import datetime
 import inspect
+import os
 
 class Severity(Enum):
     INFO = 0
@@ -10,50 +10,53 @@ class Severity(Enum):
     ERROR = 2
     EXCEPTION = 3
 
-class Logger:
-    def __init__(self, events=None):
-        default_values = {
-            "datetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "severity": Severity.INFO.name,
-	    "caller": self.get_caller(),
-            "response": "FAILURE",
-            "message": ""
-        }
-        
-        if events is None:
-            # If no events are provided, use a default event
-            self.events = [
-                {
-                    self.name = "Default Event",
-                    self.data = default_values
-                }
-            ]
-        else:
-            # If events are provided, use them
-            self.events = []
-            for event_name, event_data in events.items():
-                custom_event_data = []
-                for item in event_data:
-                    # Fill missing fields with default values
-                    filled_data = {**default_values, **json.loads(item)}
-                    custom_event_data.append(filled_data)
-                self.events.append({
-                    self.name = event_name,
-                    self.data = custom_event_data
-                })	
+class Response(Enum):
+    SUCCESS = 200
+    FAILURE = 400
 
-    @staticmethod
-    def log_to_file(json_data, file_path='logger.json'):
-        log_entry = json_data
-        if not os.path.exists(file_path):
-            with open(file_path, 'w') as file:
-                json.dump([log_entry], file, indent=2)
+class EventProcessor:
+    def __init__(self, events=None):
+        if events is None:
+            events = []
+        self.events = events
+
+    def process_data(self):
+        processed_data = []
+        for event in self.events:
+            processed_event = {
+                "name": event.get("name", "default_event"),
+                "data": {
+                    "datetime": event["data"].get("datetime", datetime.now().isoformat()),
+                    "severity": event["data"].get("severity", Severity.INFO.value),
+                    "caller": event["data"].get("caller", self.get_caller()),
+                    "response": event["data"].get("response", Response.FAILURE.value),
+                    "message": event["data"].get("message", "")
+                }
+            }
+            processed_data.append(processed_event)
+        return {"Event": processed_data}
+
+    def read_and_print_file(self, filename='output.json'):
+        if os.path.exists(filename):
+            with open(filename, 'r') as json_file:
+                file_content = json.load(json_file)
+                print("File Content:")
+                print(json.dumps(file_content, indent=2))
         else:
-            with open(file_path, 'r') as file:
-                data = json.load(file)
-                data.append(log_entry)
-            with open(file_path, 'w') as file:
-                json.dump(data, file, indent=2)
+            print(f"The file {filename} does not exist.")
+            
+    def write_to_file(self, filename='output.json'):
+        processed_data = self.process_data()
+        if os.path.exists(filename):
+            # If the file already exists, load existing data and append new data
+            with open(filename, 'r') as json_file:
+                existing_data = json.load(json_file)
+                existing_data["Event"].extend(processed_data["Event"])
+        else:
+            existing_data = processed_data
+
+        with open(filename, 'w') as json_file:
+            json.dump(existing_data, json_file, indent=2)
                 
 
     def get_caller(self):
