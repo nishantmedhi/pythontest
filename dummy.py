@@ -78,6 +78,7 @@ class EventProcessor:
 processor = EventProcessor()
 processor.write_to_file('output.json')  # Create a file with default data
 
+
 # If data is provided, it updates the fields accordingly
 custom_data_1 = [
     {
