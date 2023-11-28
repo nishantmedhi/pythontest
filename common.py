@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 import inspect
 
-
 class Severity(Enum):
     INFO = 0
     WARNING = 1
