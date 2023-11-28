@@ -74,9 +74,6 @@ class EventProcessor:
             json.dump(existing_data, json_file, indent=2)
         print(f"Processed data written to {filename}")
 
-
-
-
 # If data is provided, it updates the fields accordingly
 processor = EventProcessor()
 processor.write_to_file('output.json')  # Create a file with default data
