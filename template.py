@@ -1,4 +1,4 @@
-from common import Logger, Severity
+from common import Logger, Severity, Response
 import inspect
 
 logger = Logger()
@@ -36,19 +36,33 @@ def pre_check_ansible_windows():
        
         
 def record(eventName, caller, response, severity=None, message=None):
-    logger.events.name = eventName
-    logger.events.data.caller = caller
+    eventData = []
     if severity not in ["ERROR", "EXCEPTION"] and response == "SUCCESS":
-        logger.events.data = {
-                        "response": response
-                    }
+        eventData = [
+                        {
+                            "name": eventName,
+                            "data": {
+                                "caller": caller,
+                                "response": response,
+                                "message": eventName + "executed successfully"
+                            }
+                        }
+                    ]
     else:
-        logger.events.data = {
-                        "severity": Severity.severity.value,
-                        "message": str(e)
-                    }
-        
-    logger.log_to_file(logger.__dict__)
+        eventData = [
+                        {
+                            "name": eventName,
+                            "data": {
+                                "caller": caller,
+                                "severity": Severity.severity.value
+                                "message": str(e)
+                            }
+                        }
+                    ]
+
+    logger_data = logger(eventData)
+    logger_data.write_to_file('output.json')
+    logger.read_and_print_file('output.json')
     
 
 if __name__ == "__main__":
