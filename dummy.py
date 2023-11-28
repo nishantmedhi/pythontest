@@ -1,58 +1,84 @@
 import json
+from enum import Enum
 from datetime import datetime
+import inspect
 
-class DataProcessor:
-    def __init__(self, events=None):
+class Severity(Enum):
+    INFO = 'INFO'
+    WARNING = 'WARNING'
+    ERROR = 'ERROR'
+
+class Response(Enum):
+    SUCCESS = 'SUCCESS'
+    FAILURE = 'FAILURE'
+
+class EventLogger:
+    def __init__(self, data=None):
+        if data is None:
+            # Initialize with dummy values
+            self.data = [{
+                "Event": [
+                    {
+                        "name": "DefaultEvent",
+                        "data": {
+                            "datetime": str(datetime.now()),
+                            "severity": Severity.INFO.value,
+                            "caller": self.get_caller_function(),
+                            "response": Response.SUCCESS.value,
+                            "message": "Default message"
+                        }
+                    }
+                ]
+            }]
+        else:
+            # Update with provided data, filling missing values with defaults
+            self.data = self.fill_defaults(data)
+
+    def fill_defaults(self, data):
+        for event in data:
+            if "Event" in event:
+                for sub_event in event["Event"]:
+                    sub_event["data"] = self.fill_default_values(sub_event.get("data", {}))
+        return data
+
+    def fill_default_values(self, data):
         default_values = {
             "datetime": str(datetime.now()),
-            "severity": "High",
-            "response": "Action taken",
-            "message": "Critical issue"
+            "severity": Severity.INFO.value,
+            "caller": self.get_caller_function(),
+            "response": Response.SUCCESS.value,
+            "message": "Default message"
         }
-        
-        if events is None:
-            # If no events are provided, use a default event
-            self.events = [
-                {
-                    "name": "Default",
-                    "data": default_values
-                }
-            ]
-        else:
-            # If events are provided, use them
-            self.events = []
-            for event_name, event_data in events.items():
-                custom_event_data = []
-                for item in event_data:
-                    # Fill missing fields with default values
-                    filled_data = {**default_values, **json.loads(item)}
-                    custom_event_data.append(filled_data)
-                self.events.append({
-                    "name": event_name,
-                    "data": custom_event_data
-                })
-        
-    def print_events(self):
-        for event in self.events:
-            print(f"\nEvent: {event['name']}")
-            for data in event['data']:
-                # Check if data is a dictionary; if not, convert it to a dictionary
-                data_dict = json.loads(data) if isinstance(data, str) else data
-                print(data_dict)
-                #print(f"  Datetime: {data_dict['datetime']}, Severity: {data_dict['severity']}, Response: {data_dict['response']}, Message: {data_dict['message']}")
+        data.update({key: data.get(key, value) for key, value in default_values.items()})
+        return data
+
+    def get_caller_function(self):
+        # Get the name of the calling function using inspect
+        frame = inspect.currentframe().f_back
+        return inspect.getframeinfo(frame).function
+
+    def to_json(self):
+        return json.dumps(self.data, indent=2)
 
 # Example usage:
-# If no events are provided, a default event will be used
-processor1 = DataProcessor()
-# If events are provided, they will be used with dynamic names
-event_data = {
-    "CustomEvent1": [
-        '{"datetime": "2023-01-01 12:00:00", "message": "Custom issue"}',
-        '{"datetime": "2023-01-02 15:30:00", "severity": "Low", "response": "No action required", "message": "Another custom message"}'
-    ],
-    "CustomEvent2": [
-        '{"datetime": "2023-01-03 09:45:00", "severity": "High", "response": "Action taken", "message": "Critical custom issue"}'
-    ]
-}
-processor2 = DataProcessor(event_data)
-processor2.print_events()
+
+# Case 1: No data provided, use default values
+event_logger_1 = EventLogger()
+print(event_logger_1.to_json())
+
+# Case 2: Provide data with some fields missing
+custom_data = [
+    {
+        "Event": [
+            {
+                "name": "CustomEvent",
+                "data": {
+                    "severity": Severity.WARNING.value,
+                    "message": "Custom message"
+                }
+            }
+        ]
+    }
+]
+event_logger_2 = EventLogger(custom_data)
+print(event_logger_2.to_json())
