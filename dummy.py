@@ -48,9 +48,11 @@ class EventProcessor:
 
     def write_to_file(self, filename='output.json'):
         processed_data = self.process_data()
-        with open(filename, 'w') as json_file:
-            json.dump(processed_data, json_file, indent=2)
-        print(f"Processed data written to {filename}")
+        print(f"Processed data :")
+        print(json.dumps(processed_data, indent=2))
+        #with open(filename, 'w') as json_file:
+            #json.dump(processed_data, json_file, indent=2)
+        #print(f"Processed data written to {filename}")
 
 
 # If data is provided, it updates the fields accordingly
