@@ -36,6 +36,7 @@ class Logger:
             processed_data.append(processed_event)
         return {"Event": processed_data}
 
+    
     def read_and_print_file(self, filename='output.json'):
         if os.path.exists(filename):
             with open(filename, 'r') as json_file:
@@ -44,7 +45,8 @@ class Logger:
                 print(json.dumps(file_content, indent=2))
         else:
             print(f"The file {filename} does not exist.")
-            
+
+    
     def write_to_file(self, filename='output.json'):
         processed_data = self.process_data()
         if os.path.exists(filename):
@@ -54,7 +56,6 @@ class Logger:
                 existing_data["Event"].extend(processed_data["Event"])
         else:
             existing_data = processed_data
-
         with open(filename, 'w') as json_file:
             json.dump(existing_data, json_file, indent=2)
                 
@@ -62,7 +63,10 @@ class Logger:
     def get_caller(self):
         stack = inspect.stack()
         if len(stack) > 2:
-            calling_module = inspect.getmodulename(stack[2].filename)
-            calling_function = stack[2].function
+            calling_module = stack[1][1]
+            calling_function = stack[1][3]
+            # if the calling function is empty, return only the calling module
+            if calling_function in "<module>":
+                return f"{calling_module}"
             return f"{calling_module}.{calling_function}"
         return "Function caller could not be determined"
