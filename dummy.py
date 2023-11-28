@@ -4,7 +4,6 @@ from datetime import datetime
 import inspect
 import os
 
-
 class Severity(Enum):
     INFO = 'INFO'
     WARNING = 'WARNING'
@@ -41,8 +40,8 @@ class EventProcessor:
                     "datetime": event["data"].get("datetime", datetime.now().isoformat()),
                     "severity": event["data"].get("severity", Severity.INFO.value),
                     "caller": event["data"].get("caller", inspect.stack()[1][3]),
-                    "response": event["data"].get("response", Response.FAILURE.value),
-                    "message": event["data"].get("message", "Default message from init")
+                    "response": event["data"].get("response", Response.SUCCESS.value),
+                    "message": event["data"].get("message", "Default message from process_data")
                 }
             }
             processed_data.append(processed_event)
@@ -99,7 +98,7 @@ custom_data_2 = [
         "name": "custom_event_2",
         "data": {
             "severity": Severity.WARNING.value,
-            "message": "Custom warning message"
+            "message": "Custom warning message 2"
         }
     }
 ]
