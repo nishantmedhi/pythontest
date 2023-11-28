@@ -25,8 +25,8 @@ class Logger:
             # If no events are provided, use a default event
             self.events = [
                 {
-                    "name": "Default Event",
-                    "data": default_values
+                    self.name: "Default Event",
+                    self.data: default_values
                 }
             ]
         else:
@@ -39,8 +39,8 @@ class Logger:
                     filled_data = {**default_values, **json.loads(item)}
                     custom_event_data.append(filled_data)
                 self.events.append({
-                    "name": event_name,
-                    "data": custom_event_data
+                    self.name: event_name,
+                    self.data: custom_event_data
                 })	
 
     @staticmethod
