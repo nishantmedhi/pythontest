@@ -56,6 +56,7 @@ class Logger:
                 existing_data["Event"].extend(processed_data["Event"])
         else:
             existing_data = processed_data
+        
         with open(filename, 'w') as json_file:
             json.dump(existing_data, json_file, indent=2)
                 
