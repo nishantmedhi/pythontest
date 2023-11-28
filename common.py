@@ -26,6 +26,7 @@ class Logger:
                     }
                 } ]
             }
+	
 	self.event.name = json_data["name"]
 	self.event.data = json_data["data"]
 
