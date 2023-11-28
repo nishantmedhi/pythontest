@@ -38,7 +38,9 @@ class DataProcessor:
         for event in self.events:
             print(f"\nEvent: {event['name']}")
             for data in event['data']:
-                print(f"  Datetime: {data['datetime']}, Severity: {data['severity']}, Response: {data['response']}, Message: {data['message']}")
+                # Check if data is a dictionary; if not, convert it to a dictionary
+                data_dict = json.loads(data) if isinstance(data, str) else data
+                print(f"  Datetime: {data_dict['datetime']}, Severity: {data_dict['severity']}, Response: {data_dict['response']}, Message: {data_dict['message']}")
 
 # Example usage:
 # If no events are provided, a default event will be used
