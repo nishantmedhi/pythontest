@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from json.decoder import JSONDecodeError
 
 class DataProcessor:
     def __init__(self, events=None):
@@ -26,8 +27,11 @@ class DataProcessor:
                 custom_event_data = []
                 for item in event_data:
                     # Fill missing fields with default values
-                    filled_data = {**default_values, **json.loads(item)}
-                    custom_event_data.append(filled_data)
+                    try:
+                        filled_data = {**default_values, **json.loads(item)}
+                        custom_event_data.append(filled_data)
+                    except JSONDecodeError as e:
+                        print(f"Error decoding JSON data: {e}. Skipping invalid data.")
 
                 self.events.append({
                     "name": event_name,
@@ -55,6 +59,9 @@ event_data = {
     ],
     "CustomEvent2": [
         '{"datetime": "2023-01-03 09:45:00", "severity": "High", "response": "Action taken", "message": "Critical custom issue"}'
+    ],
+    "InvalidEvent": [
+        '{"datetime": "2023-01-04", "severity": "Low", "response": "Invalid JSON}'  # Invalid JSON data
     ]
 }
 processor2 = DataProcessor(event_data)
