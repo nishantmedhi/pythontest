@@ -1,6 +1,4 @@
-from enum import Enum
 from common import Severity, Response
-import json
 
 class EventRecorder:
     def record(eventName, caller, response, severity=None, message=None):
