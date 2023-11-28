@@ -27,10 +27,10 @@ class Logger:
 			                    }
 				        }
 				    ]
-		} ]
+			} ]
         else:
-		self.json_data = []
-		self.json_data.name = json_data["name"]
+			self.json_data = []
+			self.json_data.name = json_data["name"]
         	self.json_data.data = json_data["data"]	
 
     @staticmethod
