@@ -1,6 +1,6 @@
 from common import Logger
 from record import EventRecorder
-import os
+import os, sys
 
 logger = Logger()
 eventRecorder = EventRecorder()
@@ -16,6 +16,7 @@ def verify_java_upgrade_install_windows():
         else:
             message = "to_version in workflow input is below the prescribed version for update"
             update_logs(eventRecorder.record(eventName, caller, "FAILURE", "ERROR", message))
+            sys.exit(1)
             
         upgrage_java_install_windows()
             
@@ -32,6 +33,7 @@ def upgrage_java_install_windows():
         else:
             message = "Installation of java version " + update_java_version + " failed in Windows"
             update_logs(eventRecorder.record(eventName, caller, "FAILURE", "ERROR", message))
+            sys.exit(1)
             
     except Exception as e:
         update_logs(eventRecorder.record(eventName, caller, "FAILURE", "EXCEPTION", str(e)))
