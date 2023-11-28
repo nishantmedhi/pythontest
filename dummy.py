@@ -31,12 +31,25 @@ class DataProcessor:
                     "name": event_name,
                     "data": custom_event_data
                 })
+        self.output_json = self.generate_output_json()
 
-    def print_events(self):
+    def generate_output_json(self):
+        output = []
         for event in self.events:
-            for data in event['data']:
-                print(data)
-                #print(f"  Datetime: {data['datetime']}, Severity: {data['severity']}, Response: {data['response']}, Message: {data['message']}")
+            event_data = {
+                "name": event['name'],
+                "data": [
+                    {
+                        "datetime": data['datetime'],
+                        "severity": data['severity'],
+                        "response": data['response'],
+                        "message": data['message']
+                    }
+                    for data in event['data']
+                ]
+            }
+            output.append(event_data)
+        print(output)
 
 # Example usage:
 # If no events are provided, a default event will be used
