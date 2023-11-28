@@ -42,12 +42,11 @@ class DataProcessor:
 # Example usage:
 # If no events are provided, a default event will be used
 processor1 = DataProcessor()
-processor1.print_events()
 
 # If events are provided, they will be used with dynamic names
 event_data = {
     "CustomEvent1": [
-        '{"datetime": "2023-01-01 12:00:00", "severity": "Medium", "response": "Investigating", "message": "Custom issue"}',
+        '{"datetime": "2023-01-01 12:00:00", "message": "Custom issue"}',
         '{"datetime": "2023-01-02 15:30:00", "severity": "Low", "response": "No action required", "message": "Another custom message"}'
     ],
     "CustomEvent2": [
