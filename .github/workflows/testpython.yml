@@ -2,7 +2,7 @@ name: Test Dummy Code
 on: push
 
 jobs:
-  hello-world:
+  dummy-test:
     name: Hello world
     runs-on: ubuntu-latest
     steps:
