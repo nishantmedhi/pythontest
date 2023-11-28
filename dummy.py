@@ -84,8 +84,8 @@ custom_data_1 = [
     {
         "name": "custom_event_1",
         "data": {
-            "severity": Severity.ERROR.value,
-            "message": "Custom error message 1"
+            "severity": Severity.ERROR.value
+            #"message": "Custom error message 1"
         }
     }
 ]
@@ -97,8 +97,8 @@ custom_data_2 = [
     {
         "name": "custom_event_2",
         "data": {
-            "severity": Severity.WARNING.value,
-            "message": "Custom warning message 2"
+            "severity": Severity.WARNING.value
+            #"message": "Custom warning message 2"
         }
     }
 ]
