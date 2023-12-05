@@ -1,5 +1,5 @@
-from common import Logger
-from record import EventRecorder
+from common.common import Logger
+from common.record import EventRecorder
 
 logger = Logger()
 eventRecorder = EventRecorder()
