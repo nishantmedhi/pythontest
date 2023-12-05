@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'/custom_components/common')
+sys.path.insert(0,'/home/runner/work/pythontest/pythontest/custom_components/common')
 print(sys.path)
 
 from custom_components.common.logger import Logger
