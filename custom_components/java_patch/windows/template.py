@@ -1,5 +1,17 @@
 import sys
-sys.path.insert(0,'/home/runner/work/pythontest/pythontest/custom_components/common')
+import os
+
+# Step 1: Determine the GitHub runner's path
+github_runner_path = os.environ.get('RUNNER_WORKSPACE', '')
+
+# Step 2: Determine the repository name
+repository_name = os.environ.get('GITHUB_REPOSITORY', '')
+repo_name = repository_name.split('/')[-1] if repository_name else ''
+
+module_path = os.path.join(github_runner_path, repo_name, "/custom_components/common")
+
+sys.path.insert(0, module_path)
+
 print(sys.path)
 
 from logger import Logger
