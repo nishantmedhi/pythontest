@@ -22,7 +22,6 @@ jobs:
     - uses: actions/checkout@v2
     - run: |
         chmod +x custom_components/java_patch/windows/template.py
-        export PYTHONPATH=$PYTHONPATH:/home/runner/work/pythontest/pythontest/custom_components/common
         python custom_components/java_patch/windows/template.py
   #upgrade_java_version:
     #name: Upgrade java version
