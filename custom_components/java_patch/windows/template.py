@@ -1,5 +1,5 @@
-from ..common.logger import Logger
-from ..common.eventRecorder import EventRecorder
+from custom_components.common.logger import Logger
+from custom_components.common.eventRecorder import EventRecorder
 
 logger = Logger()
 eventRecorder = EventRecorder()
