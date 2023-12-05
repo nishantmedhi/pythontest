@@ -1,6 +1,7 @@
 import sys
 print(sys.path)
 sys.path.append('/custom_components/common/')
+print(sys.path)
 from custom_components.common.logger import Logger
 from custom_components.common.record import EventRecorder
 
