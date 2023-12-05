@@ -1,4 +1,4 @@
-from commons.common import Severity, Response
+from common.common import Severity, Response
 
 class EventRecorder:
     def record(self, eventName, caller, response, severity=None, message=None):
