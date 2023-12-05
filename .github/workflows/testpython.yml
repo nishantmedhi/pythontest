@@ -20,7 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: custom_components/java_patch/windows/template.py
+    - run: |
+        chmod +x custom_components/java_patch/windows/template.py
+        custom_components/java_patch/windows/template.py
   #upgrade_java_version:
     #name: Upgrade java version
     #runs-on: ubuntu-latest
