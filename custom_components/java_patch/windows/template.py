@@ -4,6 +4,7 @@ import os
 current_dir = os.path.dirname(os.path.abspath(__file__))
 common_path = os.path.join(current_dir, '..', 'common')
 sys.path.append(common_path)
+print(sys.path)
 
 from logger import Logger
 from eventRecorder import EventRecorder
