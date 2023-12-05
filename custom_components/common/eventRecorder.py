@@ -1,4 +1,4 @@
-from custom_components.common.logger import Severity, Response
+from logger import Severity, Response
 
 class EventRecorder:
     def record(self, eventName, caller, response, severity=None, message=None):
