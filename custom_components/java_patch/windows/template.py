@@ -3,7 +3,7 @@ print(sys.path)
 sys.path.append('/home/runner/work/pythontest/pythontest/custom_components/common')
 print(sys.path)
 from custom_components.common.logger import Logger
-from custom_components.common.record import EventRecorder
+from custom_components.common.eventRecorder import EventRecorder
 
 logger = Logger()
 eventRecorder = EventRecorder()
