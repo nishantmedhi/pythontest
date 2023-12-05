@@ -3,7 +3,9 @@ import os
 
 # Step 1: Determine the GitHub runner's path
 github_workspace_path = os.environ.get('GITHUB_WORKSPACE', '')
-module_path = os.path.join(github_workspace_path, "/custom_components/common")
+module_path = github_workspace_path + "/custom_components/common"
+print(f"Module path : {module_path}")
+#module_path = os.path.join(github_workspace_path, "/custom_components/common")
 
 sys.path.insert(0, module_path)
 
